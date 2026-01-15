@@ -29,7 +29,7 @@ else
     GOARCH := amd64
 endif
 
-.PHONY: all help install tools nvim bashrc dirs clean
+.PHONY: all help install tools nvim bashrc dirs clean uv-tools
 
 all: help
 
@@ -41,7 +41,7 @@ help:
 	@echo "  make bashrc   - Symlink .bashrc to home directory"
 	@echo "  make clean    - Remove build artifacts"
 
-install: dirs tools nvim bashrc
+install: dirs tools uv-tools nvim bashrc
 	@echo "Setup complete. Run 'source ~/.bashrc' to reload."
 
 dirs:
@@ -97,6 +97,17 @@ $(BIN_DIR)/fzf:
 		$(LOCAL_DIR)/fzf/install --bin; \
 	fi
 	ln -sf $(LOCAL_DIR)/fzf/bin/fzf $(BIN_DIR)/fzf
+
+# --- UV Python Tools ---
+uv-tools:
+	@echo "==> Installing uv..."
+	@command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
+	@echo "==> Installing Python tools via uv..."
+	uv tool install ruff
+	uv tool install pyright
+	uv tool install debugpy
+	uv tool install black
+	uv tool update-shell
 
 # --- Neovim ---
 nvim: dirs $(BIN_DIR)/nvim nvim-config
