@@ -113,10 +113,9 @@ $(BIN_DIR)/nvim:
 
 nvim-config:
 	@echo "==> Configuring LazyVim..."
-	@if [ ! -d $(CONF_DIR)/nvim ]; then \
-		git clone https://github.com/LazyVim/starter $(CONF_DIR)/nvim; \
-		rm -rf $(CONF_DIR)/nvim/.git; \
-	fi
+	rm -rf $(CONF_DIR)/nvim
+	git clone https://github.com/LazyVim/starter $(CONF_DIR)/nvim
+	rm -rf $(CONF_DIR)/nvim/.git
 	@mkdir -p $(CONF_DIR)/nvim/lua/plugins $(CONF_DIR)/nvim/lua/config
 	@echo 'return { { "neovim/nvim-lspconfig", opts = { servers = { pyright = {} } } }, { "mason-org/mason.nvim", opts = { ensure_installed = { "pyright", "ruff", "debugpy", "yaml-language-server" } } }, { "stevearc/conform.nvim", opts = { formatters_by_ft = { python = { "ruff" }, yaml = { "prettier" }, json = { "prettier" } } } } }' > $(CONF_DIR)/nvim/lua/plugins/ml.lua
 	@echo 'return { { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = { "python", "bash", "json", "yaml", "markdown" } } } }' > $(CONF_DIR)/nvim/lua/plugins/treesitter.lua
