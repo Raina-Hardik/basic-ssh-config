@@ -117,22 +117,9 @@ nvim-config:
 		rm -rf $(CONF_DIR)/nvim/.git; \
 	fi
 	@mkdir -p $(CONF_DIR)/nvim/lua/plugins $(CONF_DIR)/nvim/lua/config
-	@# Create ML/Python Profile
-	@cat > $(CONF_DIR)/nvim/lua/plugins/ml.lua <<'EOF'
-return {
-  { "neovim/nvim-lspconfig", opts = { servers = { pyright = {} } } },
-  { "williamboman/mason.nvim", opts = { ensure_installed = { "pyright", "ruff", "debugpy", "yaml-language-server" } } },
-  { "stevearc/conform.nvim", opts = { formatters_by_ft = { python = { "ruff" }, yaml = { "prettier" }, json = { "prettier" } } } },
-}
-EOF
-	@cat > $(CONF_DIR)/nvim/lua/plugins/treesitter.lua <<'EOF'
-return {
-  { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = { "python", "bash", "json", "yaml", "markdown" } } },
-}
-EOF
-	@# Inject custom config into init.lua if missing
-	@grep -q "config.python" $(CONF_DIR)/nvim/init.lua || echo 'require("config.python")' >> $(CONF_DIR)/nvim/init.lua
-	@# Create python helper config
+	@echo 'return { { "neovim/nvim-lspconfig", opts = { servers = { pyright = {} } } }, { "williamboman/mason.nvim", opts = { ensure_installed = { "pyright", "ruff", "debugpy", "yaml-language-server" } } }, { "stevearc/conform.nvim", opts = { formatters_by_ft = { python = { "ruff" }, yaml = { "prettier" }, json = { "prettier" } } } } }' > $(CONF_DIR)/nvim/lua/plugins/ml.lua
+	@echo 'return { { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = { "python", "bash", "json", "yaml", "markdown" } } } }' > $(CONF_DIR)/nvim/lua/plugins/treesitter.lua
+	@grep -q "config.python" $(CONF_DIR)/nvim/init.lua 2>/dev/null || echo 'require("config.python")' >> $(CONF_DIR)/nvim/init.lua
 	@echo 'vim.api.nvim_create_autocmd("FileType", { pattern = "python", callback = function() vim.opt_local.expandtab = true; vim.opt_local.shiftwidth = 4; end })' > $(CONF_DIR)/nvim/lua/config/python.lua
 
 # --- Bash RC ---
