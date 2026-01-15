@@ -74,7 +74,7 @@ $(BIN_DIR)/bat:
 $(BIN_DIR)/duf:
 	@echo "==> Installing duf..."
 	mkdir -p $(TMP_DIR)/duf && cd $(TMP_DIR)/duf && \
-	curl -fLO https://github.com/muesli/duf/releases/download/v$(DUF_VER)/duf_$(DUF_VER)_linux_$(GOARCH).tar.gz && \
+	curl -fLO https://github.com/muesli/duf/releases/download/v$(DUF_VER)/duf_$(DUF_VER)_Linux_$(ARCH).tar.gz && \
 	tar -xzf *.tar.gz && \
 	cp duf $(BIN_DIR)/
 
@@ -104,10 +104,11 @@ nvim: dirs $(BIN_DIR)/nvim nvim-config
 $(BIN_DIR)/nvim:
 	@echo "==> Installing Neovim $(NVIM_VER)..."
 	rm -rf $(LOCAL_DIR)/nvim
+	mkdir -p $(LOCAL_DIR)/nvim
 	mkdir -p $(TMP_DIR)/nvim && cd $(TMP_DIR)/nvim && \
 	curl -fLO https://github.com/neovim/neovim/releases/download/v$(NVIM_VER)/nvim-linux-$(ARCH).tar.gz && \
 	tar -xzf *.tar.gz --strip-components=1 && \
-	cp -r * $(LOCAL_DIR)/nvim/ || true
+	cp -r * $(LOCAL_DIR)/nvim/
 	ln -sf $(LOCAL_DIR)/nvim/bin/nvim $(BIN_DIR)/nvim
 
 nvim-config:
@@ -128,7 +129,7 @@ bashrc:
 	@if [ -f $(HOME)/.bashrc ] && [ ! -L $(HOME)/.bashrc ]; then \
 		mv $(HOME)/.bashrc $(HOME)/.bashrc.bak; \
 	fi
-	ln -sf $(CURDIR)/.bashrc $(HOME)/.bashrc
+	cp $(CURDIR)/.bashrc $(HOME)/.bashrc
 
 clean:
 	rm -rf $(TMP_DIR)
