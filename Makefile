@@ -30,6 +30,7 @@ else
 endif
 
 .PHONY: all help install tools nvim bashrc dirs clean uv-tools
+.PHONY: all help install tools nvim bashrc dirs clean uv-tools
 
 all: help
 
@@ -41,6 +42,7 @@ help:
 	@echo "  make bashrc   - Symlink .bashrc to home directory"
 	@echo "  make clean    - Remove build artifacts"
 
+install: dirs tools uv-tools nvim bashrc
 install: dirs tools uv-tools nvim bashrc
 	@echo "Setup complete. Run 'source ~/.bashrc' to reload."
 
